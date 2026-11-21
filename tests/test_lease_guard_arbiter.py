@@ -47,6 +47,12 @@ def _load_contract_module():
 
     gl_mod.vm = types.SimpleNamespace(UserError=_UserError)
     gl_mod.contract = types.SimpleNamespace(Contract=_Contract)
+    gl_mod.Contract = _Contract
+    gl_mod.gl = gl_mod
+    gl_mod.TreeMap = _TreeMap
+    gl_mod.Address = str
+    gl_mod.bigint = int
+    gl_mod.u256 = int
     gl_mod.public = _Public()
     gl_mod.evm = _Evm()
     gl_mod.message = types.SimpleNamespace(

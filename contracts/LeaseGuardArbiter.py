@@ -1,10 +1,8 @@
-# { "Depends": "py-genlayer:babwp9t37jw9g4j2bccgn14g6x7x9s1f7dsmh7emvz735pz4zxa0" }
+# { "Depends": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6" }
 import hashlib
 import json
 import unicodedata
-import genlayer as gl
-from genlayer.storage import TreeMap
-from genlayer.types import Address, bigint, u256
+from genlayer import *
 
 UserErr = gl.vm.UserError
 
@@ -198,19 +196,19 @@ class _NativeTransferTarget:
         pass
 
 
-class LeaseGuardArbiter(gl.contract.Contract):
+class LeaseGuardArbiter(gl.Contract):
     admin: str
     pending_admin: str
     halted: bool
-    dispute_seq: bigint
+    dispute_seq: u256
     disputes: TreeMap[str, str]
     payout_ledger: TreeMap[str, str]
     inflight_payouts: TreeMap[str, str]
     landlord_metrics: TreeMap[str, str]
-    total_claimable_wei: bigint
-    total_inflight_wei: bigint
-    escrowed_wei: bigint
-    staked_bonds_wei: bigint
+    total_claimable_wei: u256
+    total_inflight_wei: u256
+    escrowed_wei: u256
+    staked_bonds_wei: u256
 
     def __init__(self):
         self.admin = str(gl.message.sender_address).lower()
@@ -437,15 +435,15 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"CASE_FUNDED: #{key} {sent_wei} wei."
 
     @gl.public.write.payable
-    def fund_escrow_landlord(self, dispute_id: bigint) -> str:
+    def fund_escrow_landlord(self, dispute_id: u256) -> str:
         return self._deposit_escrow(dispute_id, True)
 
     @gl.public.write.payable
-    def fund_escrow_party(self, dispute_id: bigint) -> str:
+    def fund_escrow_party(self, dispute_id: u256) -> str:
         return self._deposit_escrow(dispute_id, False)
 
     @gl.public.write
-    def attach_lease_agreement(self, dispute_id: bigint, lease_text: str, clauses_json: str) -> str:
+    def attach_lease_agreement(self, dispute_id: u256, lease_text: str, clauses_json: str) -> str:
         key, state = self._require_dispute(dispute_id)
         caller = self._caller()
         self._assert_evidence_open(state, caller)
@@ -483,7 +481,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"LEASE_SUBMITTED: #{key} {entry['hash']}"
 
     @gl.public.write
-    def attach_photo_evidence(self, dispute_id: bigint, photos_json: str) -> str:
+    def attach_photo_evidence(self, dispute_id: u256, photos_json: str) -> str:
         key, state = self._require_dispute(dispute_id)
         caller = self._caller()
         self._assert_evidence_open(state, caller)
@@ -533,7 +531,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"PHOTOS_SUBMITTED: #{key} {len(in_urls)} pairs."
 
     @gl.public.write
-    def attach_correspondence(self, dispute_id: bigint, messages_text: str) -> str:
+    def attach_correspondence(self, dispute_id: u256, messages_text: str) -> str:
         key, state = self._require_dispute(dispute_id)
         caller = self._caller()
         self._assert_evidence_open(state, caller)
@@ -552,7 +550,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"MESSAGES_SUBMITTED: #{key} {entry['hash']}"
 
     @gl.public.write
-    def attach_repair_invoices(self, dispute_id: bigint, invoices_json: str) -> str:
+    def attach_repair_invoices(self, dispute_id: u256, invoices_json: str) -> str:
         key, state = self._require_dispute(dispute_id)
         caller = self._caller()
         self._assert_evidence_open(state, caller)
@@ -598,7 +596,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"INVOICES_SUBMITTED: #{key} {len(cleaned_invoices)}."
 
     @gl.public.write
-    def file_deduction_schedule(self, dispute_id: bigint, claims_json: str) -> str:
+    def file_deduction_schedule(self, dispute_id: u256, claims_json: str) -> str:
         key, state = self._require_dispute(dispute_id)
         caller = self._caller()
         self._assert_evidence_open(state, caller)
@@ -646,7 +644,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"CLAIMS_SET: #{key} {len(structured_items)} claims."
 
     @gl.public.write
-    def lock_evidence_record(self, dispute_id: bigint) -> str:
+    def lock_evidence_record(self, dispute_id: u256) -> str:
         key, state = self._require_dispute(dispute_id)
         if state["st"] in ("FROZEN", "PROVISIONAL_VERDICT", "APPEALING"):
             raise UserErr("ALREADY_FROZEN")
@@ -961,7 +959,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         )
 
     @gl.public.write
-    def evaluate_claim_item(self, dispute_id: bigint, claim_id: str) -> str:
+    def evaluate_claim_item(self, dispute_id: u256, claim_id: str) -> str:
         if self.halted:
             raise UserErr("PROTOCOL_PAUSED")
         key, state = self._require_dispute(dispute_id)
@@ -1000,7 +998,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"INCONCLUSIVE: #{key} re-opened; fresh 24h window."
 
     @gl.public.write
-    def issue_provisional_ruling(self, dispute_id: bigint) -> str:
+    def issue_provisional_ruling(self, dispute_id: u256) -> str:
         key, state = self._require_dispute(dispute_id)
         if state["st"] != "FROZEN":
             raise UserErr("NOT_FROZEN")
@@ -1072,7 +1070,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return {"landlord_wei": str(landlord_gross), "fee_wei": str(protocol_fee)}
 
     @gl.public.write
-    def finalize_escrow_distribution(self, dispute_id: bigint) -> str:
+    def finalize_escrow_distribution(self, dispute_id: u256) -> str:
         key, state = self._require_dispute(dispute_id)
         if state["st"] == "APPEALING":
             raise UserErr("APPEAL_PENDING")
@@ -1105,7 +1103,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
             raise UserErr("BAD_STATUS")
 
     @gl.public.write
-    def offer_amicable_split(self, dispute_id: bigint, tenant_wei: str, landlord_wei: str) -> str:
+    def offer_amicable_split(self, dispute_id: u256, tenant_wei: str, landlord_wei: str) -> str:
         key, state = self._require_dispute(dispute_id)
         caller = self._caller()
         self._assert_settlement_open(state, caller)
@@ -1122,7 +1120,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"SETTLEMENT_PROPOSED: #{key} T {t_share} / L {l_share}."
 
     @gl.public.write
-    def accept_amicable_split(self, dispute_id: bigint) -> str:
+    def accept_amicable_split(self, dispute_id: u256) -> str:
         key, state = self._require_dispute(dispute_id)
         caller = self._caller()
         self._assert_settlement_open(state, caller)
@@ -1147,7 +1145,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"SETTLEMENT_ACCEPTED: #{key} T {t_share} / L {l_share}; no fee."
 
     @gl.public.write.payable
-    def file_appeal(self, dispute_id: bigint) -> str:
+    def file_appeal(self, dispute_id: u256) -> str:
         key = str(int(dispute_id))
         caller = self._caller()
         sent_wei = int(gl.message.value)
@@ -1186,7 +1184,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"APPEAL_FILED: #{key}; blind re-adjudication open."
 
     @gl.public.write
-    def finalize_appeal_ruling(self, dispute_id: bigint) -> str:
+    def finalize_appeal_ruling(self, dispute_id: u256) -> str:
         if self.halted:
             raise UserErr("PROTOCOL_PAUSED")
         key, state = self._require_dispute(dispute_id)
@@ -1247,7 +1245,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"APPEAL_RESOLVED: #{key} final split recorded; {bond_note}."
 
     @gl.public.write
-    def withdraw_entitlement(self, dispute_id: bigint) -> str:
+    def withdraw_entitlement(self, dispute_id: u256) -> str:
         key = str(int(dispute_id))
         caller = self._caller()
         if self._active_withdrawal(caller, key) is not None:
@@ -1266,7 +1264,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"WITHDRAWAL_PENDING: {amount} wei to {caller} (#{key})."
 
     @gl.public.write
-    def acknowledge_withdrawal(self, dispute_id: bigint) -> str:
+    def acknowledge_withdrawal(self, dispute_id: u256) -> str:
         key = str(int(dispute_id))
         caller = self._caller()
         inflight = self._active_withdrawal(caller, key)
@@ -1297,7 +1295,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return summary
 
     @gl.public.write
-    def recover_stuck_withdrawal(self, recipient: str, dispute_id: bigint) -> str:
+    def recover_stuck_withdrawal(self, recipient: str, dispute_id: u256) -> str:
         if self._caller() != self.admin:
             raise UserErr("ONLY_OWNER")
         key = str(int(dispute_id))
@@ -1317,7 +1315,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"PENDING_RESTORED: {amount} wei claimable again for {target_addr} (#{key})."
 
     @gl.public.write
-    def abort_dispute(self, dispute_id: bigint) -> str:
+    def abort_dispute(self, dispute_id: u256) -> str:
         key, state = self._require_dispute(dispute_id)
         if self._caller() != state["cr"]:
             raise UserErr("ONLY_CREATOR")
@@ -1335,7 +1333,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         raise UserErr("BAD_STATUS")
 
     @gl.public.write
-    def expire_stale_dispute(self, dispute_id: bigint) -> str:
+    def expire_stale_dispute(self, dispute_id: u256) -> str:
         key, state = self._require_dispute(dispute_id)
         now = self._current_time()
         status = state["st"]
@@ -1420,12 +1418,12 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return f"OWNERSHIP_TRANSFERRED: {previous_admin} -> {self.admin}"
 
     @gl.public.view
-    def get_dispute_state(self, dispute_id: bigint) -> str:
+    def get_dispute_state(self, dispute_id: u256) -> str:
         state = self._lookup_dispute(dispute_id)
         return "NOT_FOUND" if state is None else json.dumps(state)
 
     @gl.public.view
-    def get_ruling_summary(self, dispute_id: bigint) -> str:
+    def get_ruling_summary(self, dispute_id: u256) -> str:
         state = self._lookup_dispute(dispute_id)
         if state is None:
             return "NOT_FOUND"
@@ -1433,7 +1431,7 @@ class LeaseGuardArbiter(gl.contract.Contract):
         return json.dumps(ruling) if ruling else "NONE"
 
     @gl.public.view
-    def get_itemized_deductions(self, dispute_id: bigint) -> str:
+    def get_itemized_deductions(self, dispute_id: u256) -> str:
         state = self._lookup_dispute(dispute_id)
         if state is None:
             return "NOT_FOUND"
@@ -1481,16 +1479,16 @@ class LeaseGuardArbiter(gl.contract.Contract):
         )
 
     @gl.public.view
-    def get_claimable_balance(self, account: str, dispute_id: bigint) -> str:
+    def get_claimable_balance(self, account: str, dispute_id: u256) -> str:
         return str(self._available_balance(str(account).strip().lower(), str(int(dispute_id))))
 
     @gl.public.view
-    def get_inflight_withdrawal(self, account: str, dispute_id: bigint) -> str:
+    def get_inflight_withdrawal(self, account: str, dispute_id: u256) -> str:
         record = self._active_withdrawal(str(account).strip().lower(), str(int(dispute_id)))
         return json.dumps(record) if record else "NONE"
 
     @gl.public.view
-    def get_appeal_status(self, dispute_id: bigint) -> str:
+    def get_appeal_status(self, dispute_id: u256) -> str:
         state = self._lookup_dispute(dispute_id)
         if state is None:
             return "NOT_FOUND"

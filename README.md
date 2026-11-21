@@ -6,10 +6,10 @@
 
 ## Live Deployment (GenLayer Studio Dev — Chain ID 61997)
 
-- **Contract Address:** `0xbbbDdA97367cfd1d518404553935466ad7D57faC`
-- **GenLayer Studio Dev:** [Import Contract](https://studio-dev.genlayer.com/?import-contract=0xbbbDdA97367cfd1d518404553935466ad7D57faC)
-- **Explorer:** [View on Explorer](https://explorer-studio-dev.genlayer.com/address/0xbbbDdA97367cfd1d518404553935466ad7D57faC)
-- **Contract SHA-256:** `a01a14a2ecfd195b1ab7fee4efa6c2a7c3c0136bcce889cf8444460521db9664`
+- **Contract Address:** `0xD7CdBE4d8b35355cc6f82D8fFF3b9fF7a3092AcB`
+- **GenLayer Studio Dev:** [Import Contract](https://studio-dev.genlayer.com/?import-contract=0xD7CdBE4d8b35355cc6f82D8fFF3b9fF7a3092AcB)
+- **Explorer:** [View on Explorer](https://explorer-studio-dev.genlayer.com/address/0xD7CdBE4d8b35355cc6f82D8fFF3b9fF7a3092AcB)
+- **Contract SHA-256:** `e5cd3baf9aa27e55b112b6ae65d6fc2bf95e06e161e5814eab6733a2d60d997f`
 
 ## Architecture & Lifecycle
 
