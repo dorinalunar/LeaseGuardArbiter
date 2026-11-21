@@ -1,0 +1,11 @@
+{
+  "project": "LeaseGuardArbiter",
+  "network": "GenLayer Studio Dev",
+  "chain_id": 61997,
+  "contract_address": "0xbbbDdA97367cfd1d518404553935466ad7D57faC",
+  "studio_import_url": "https://studio-dev.genlayer.com/?import-contract=0xbbbDdA97367cfd1d518404553935466ad7D57faC",
+  "explorer_url": "https://explorer-studio-dev.genlayer.com/address/0xbbbDdA97367cfd1d518404553935466ad7D57faC",
+  "contract_file": "contracts/LeaseGuardArbiter.py",
+  "contract_sha256": "a01a14a2ecfd195b1ab7fee4efa6c2a7c3c0136bcce889cf8444460521db9664",
+  "contract_bytes": 64572
+}

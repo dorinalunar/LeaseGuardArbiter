@@ -4,6 +4,13 @@
 
 `LeaseGuardArbiter` locks residential security deposits on-chain and resolves end-of-tenancy deduction disputes through validator consensus (`gl.eq_principle.strict_eq`) across structured lease clauses, SHA-256-verified move-in / move-out photo pairs, repair invoices, and landlord-tenant correspondence.
 
+## Live Deployment (GenLayer Studio Dev — Chain ID 61997)
+
+- **Contract Address:** `0xbbbDdA97367cfd1d518404553935466ad7D57faC`
+- **GenLayer Studio Dev:** [Import Contract](https://studio-dev.genlayer.com/?import-contract=0xbbbDdA97367cfd1d518404553935466ad7D57faC)
+- **Explorer:** [View on Explorer](https://explorer-studio-dev.genlayer.com/address/0xbbbDdA97367cfd1d518404553935466ad7D57faC)
+- **Contract SHA-256:** `a01a14a2ecfd195b1ab7fee4efa6c2a7c3c0136bcce889cf8444460521db9664`
+
 ## Architecture & Lifecycle
 
 1. **Dispute Registration & Escrow Funding (`open_dispute`, `fund_escrow_landlord`, `fund_escrow_party`)**
