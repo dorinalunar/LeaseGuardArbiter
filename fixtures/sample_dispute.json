@@ -1,0 +1,35 @@
+{
+  "landlord": "0x1111111111111111111111111111111111111111",
+  "tenant": "0x2222222222222222222222222222222222222222",
+  "property_ref": "Apt 4B, 120 Oak Avenue",
+  "deposit_wei": "10000000000000000",
+  "funding_path": "DISPUTE_TIME",
+  "lease_language": "en",
+  "clauses": [
+    {
+      "clause_id": "CL-12",
+      "text": "Tenant shall return walls and flooring free of structural holes or burns beyond ordinary wear."
+    }
+  ],
+  "photos": {
+    "move_in": [
+      {
+        "url": "https://example.com/evidence/move_in_wall.jpg",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    ],
+    "move_out": [
+      {
+        "url": "https://example.com/evidence/move_out_wall.jpg",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "item": "Deep burn mark on living room hardwood floor",
+      "claimed_amount_wei": "4000000000000000",
+      "clause_id": "CL-12"
+    }
+  ]
+}

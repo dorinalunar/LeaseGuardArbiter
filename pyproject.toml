@@ -1,0 +1,20 @@
+[project]
+name = "lease-guard-arbiter"
+version = "0.3.0"
+description = "AI-adjudicated residential tenancy deposit escrow and multi-modal evidence arbitration contract on GenLayer"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Andrii Efimenko" }]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501"]
